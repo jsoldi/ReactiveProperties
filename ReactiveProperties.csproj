@@ -71,6 +71,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Assignable\Property.cs" />
     <Compile Include="Core\PropertySource.cs" />
+    <Compile Include="Utils\DisposableSet.cs" />
     <Compile Include="Utils\PropertyHelper.cs" />
     <Compile Include="WinForms\Property.cs" />
     <Compile Include="WinForms\PropertySource.cs" />
