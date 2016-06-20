@@ -1,2 +1,2 @@
 # ReactiveProperties
-Observable properties for easy binding. [Sample application here](https://github.com/jsoldi/ReactivePropertiesSample).
+Observable properties for easy binding. [Here's a simple sample WinForms application](https://github.com/jsoldi/ReactivePropertiesSample).
