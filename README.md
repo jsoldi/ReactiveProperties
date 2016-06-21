@@ -104,7 +104,7 @@ In this example, changing any of the X or Y properties will cause (if the actual
         }
     );
 
-`IProperty<T>` also has a [SelectMany][13] and a variation of the `Select` methods (which also take a backwards selector), but since it cannot have a Return method (it wouldn't make any sense), it is not a monad and therefore not as extensible as `IPropertySource<T>`. 
+`IProperty<T>` also has a [SelectMany][13] and a variation of the [Select][14] method (which also take a backwards selector), but since it cannot have a Return method (it wouldn't make any sense), it is not a monad and therefore not as extensible as `IPropertySource<T>`. 
 
 
   [1]: https://msdn.microsoft.com/en-us/data/gg577609
@@ -120,3 +120,4 @@ In this example, changing any of the X or Y properties will cause (if the actual
   [11]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L154
   [12]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L10
   [13]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/PropertyExtensions.cs#L12
+  [14]: https://github.com/jsoldi/ReactiveProperties/blob/574eb022526bdaad520fcbcca947be9bc469423d/Assignable/PropertyExtensions.cs#L20
