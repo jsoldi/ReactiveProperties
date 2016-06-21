@@ -3,7 +3,6 @@
 
 Observable properties for easy binding. [Here is a tiny sample WinForms application to get you started](https://github.com/jsoldi/ReactivePropertiesSample).
 
-----------
 
 # Quick start
 
