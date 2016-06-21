@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReactiveProperties
 {
+    /// <summary>
+    /// A class that implements the <see cref="IProperty{T}"/> interface using explicitly given values.
+    /// </summary>
+    /// <typeparam name="T">The type of the property.</typeparam>
     internal class ExplicitProperty<T> : IProperty<T>
     {
         private readonly IPropertySource<T> _PropertySource;

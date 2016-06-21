@@ -47,7 +47,7 @@ namespace WinFormsSample
             DisposableSet.AddRange(
 
                 // Adding this just because it also needs to be disposed
-                booksBindingSource, 
+                booksBindingSource,
 
                 // Disable input controls if the current book is dummyBook (which means np book is currently selected because the book list is empty)
                 CurrentBook.Select(book => object.ReferenceEquals(book, dummyBook)).Subscribe(isDummy =>

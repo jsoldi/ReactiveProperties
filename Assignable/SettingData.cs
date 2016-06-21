@@ -6,17 +6,45 @@ using System.Threading.Tasks;
 
 namespace ReactiveProperties
 {
-    public class SettingData<T>
+    /// <summary>
+    /// Encapsulates the information needed to customize a property value setting operation.
+    /// </summary>
+    /// <typeparam name="T">The type of the property.</typeparam>
+    public struct SettingData<T>
     {
-        public readonly T CurrentValue;
-        public readonly T DesiredValue;
-        public Action<T> SetAndNotify;
+        private readonly T _CurrentValue;
+        private readonly T _DesiredValue;
+        private Action<T> _SetAndNotify;
+
+        /// <summary>
+        /// The current value of the property.
+        /// </summary>
+        public T CurrentValue 
+        { 
+            get { return _CurrentValue; } 
+        }
+
+        /// <summary>
+        /// The value being assigned to the property.
+        /// </summary>
+        public T DesiredValue 
+        { 
+            get { return _DesiredValue; } 
+        }
+
+        /// <summary>
+        /// Sets the given value to the property and notifies subscribers, if any. Should normally take <see cref="DesiredValue"/>.
+        /// </summary>
+        public Action<T> SetAndNotify 
+        { 
+            get { return _SetAndNotify; } 
+        }
 
         internal SettingData(T currentValue, T desiredValue, Action<T> setAndNotify)
         {
-            CurrentValue = currentValue;
-            DesiredValue = desiredValue;
-            SetAndNotify = setAndNotify;
+            _CurrentValue = currentValue;
+            _DesiredValue = desiredValue;
+            _SetAndNotify = setAndNotify;
         }
     }
 }

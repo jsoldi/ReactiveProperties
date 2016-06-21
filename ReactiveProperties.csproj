@@ -26,6 +26,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,6 +70,7 @@
     <Compile Include="Core\ChangeInfo.cs" />
     <Compile Include="Core\ExplicitPropertySource.cs" />
     <Compile Include="Core\IPropertySource.cs" />
+    <Compile Include="Core\MergedPropertyValue.cs" />
     <Compile Include="Core\PropertySourceExtensions.cs" />
     <Compile Include="Core\PropertySourceLinq.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +80,7 @@
     <Compile Include="Utils\PropertyHelper.cs" />
     <Compile Include="WinForms\Property.cs" />
     <Compile Include="WinForms\PropertySource.cs" />
+    <Compile Include="WinForms\PropertySourceExtensions.cs" />
     <Compile Include="WinForms\PropertySourceLinq.cs" />
   </ItemGroup>
   <ItemGroup>

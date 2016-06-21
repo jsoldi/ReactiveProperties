@@ -9,11 +9,24 @@ namespace ReactiveProperties
 {
     public static partial class PropertySource
     {
+        /// <summary>
+        /// Creates an immutable property source with the given value. This is the return operator of the property source monad.
+        /// </summary>
+        /// <typeparam name="T">The type of the property source.</typeparam>
+        /// <param name="value">The value of the property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<T> Return<T>(T value)
         {
             return PropertySource.Create(observer => Disposable.Empty, () => value);
         }
 
+        /// <summary>
+        /// Given a property source, creates a property source that notifies only when the original property source's value changes according to the provided equality comparer.
+        /// </summary>
+        /// <typeparam name="T">The type of the property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <param name="comparer">The comparer that determines whether the property source value has changed.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<T> Distinct<T>(this IPropertySource<T> source, IEqualityComparer<T> comparer)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -55,6 +68,12 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Given a property source, creates a property source that notifies only when the original property source's value changes.
+        /// </summary>
+        /// <typeparam name="T">The type of the property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<T> Distinct<T>(this IPropertySource<T> source)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -62,6 +81,12 @@ namespace ReactiveProperties
             return source.Distinct(EqualityComparer<T>.Default);
         }
 
+        /// <summary>
+        /// Given a property source, creates a property source that notifies at subscription time, regardless what the original source does.
+        /// </summary>
+        /// <typeparam name="T">The type of the property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<T> Eager<T>(this IPropertySource<T> source)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -76,6 +101,12 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Given a property source, creates a property source that does not notify at subscription time, regardless what the original source does.
+        /// </summary>
+        /// <typeparam name="T">The type of the property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<T> Lazy<T>(this IPropertySource<T> source)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -92,6 +123,16 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Given a property source and a selector that returns a property source, calls the selector passing the source's value, 
+        /// at subscription time and every time the original source changes, and creates a property source whose value is the value 
+        /// of the property source returned by the selector. This is the bind operator of the property source monad.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the original property soruce.</typeparam>
+        /// <typeparam name="TResult">The type of the created property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <param name="selector">A function that receives the value of the original source at subscription time and every time it changes, and returns a property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<TResult> SelectMany<TSource, TResult>(this IPropertySource<TSource> source, Func<TSource, IPropertySource<TResult>> selector)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -128,6 +169,14 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Creates a new property source given an original property source and a selector that maps each value taken by the original source property into a new value.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the original source.</typeparam>
+        /// <typeparam name="TResult">The type of the created property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <param name="selector">The selector that maps the original source values into new values.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<TResult> Select<TSource, TResult>(this IPropertySource<TSource> source, Func<TSource, TResult> selector)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -136,6 +185,12 @@ namespace ReactiveProperties
             return source.SelectMany(value => PropertySource.Return(selector(value)));
         }
 
+        /// <summary>
+        /// Casts the values taken by a property source to the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to case the original source values to.</typeparam>
+        /// <param name="source">The orignal property source.</param>
+        /// <returns>A property source whose value is the result of casting the original property source.</returns>
         public static IPropertySource<T> Cast<T>(this IPropertySource<object> source)
         {
             if (source == null) throw new ArgumentNullException("source");
@@ -143,6 +198,12 @@ namespace ReactiveProperties
             return source.Select(obj => (T)obj);
         }
 
+        /// <summary>
+        /// Casts the values taken by a property source to the specified type, or set the resulting property source's value to null if casting isn't possible.
+        /// </summary>
+        /// <typeparam name="T">The type to case the original source values to.</typeparam>
+        /// <param name="source">The orignal property source.</param>
+        /// <returns>A property source whose value is the result of casting the original property source, or null if casting isn't possible.</returns>
         public static IPropertySource<T> As<T>(this IPropertySource<object> source)
             where T : class
         {
@@ -151,6 +212,16 @@ namespace ReactiveProperties
             return source.Select(obj => obj as T);
         }
 
+        /// <summary>
+        /// Merges two property sources into a single one using a selector that takes values from both sources and returns another value.
+        /// </summary>
+        /// <typeparam name="TLeft">The type of the left property source.</typeparam>
+        /// <typeparam name="TRight">The type fo the right property source.</typeparam>
+        /// <typeparam name="TResult">The type of the selector's result and the created property source.</typeparam>
+        /// <param name="left">The left property source.</param>
+        /// <param name="right">The right property source.</param>
+        /// <param name="selector">A function that is called every time the left or right property sources change and returns another value.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<TResult> Merge<TLeft, TRight, TResult>(this IPropertySource<TLeft> left, IPropertySource<TRight> right, Func<TLeft, TRight, TResult> selector)
         {
             if (left == null) throw new ArgumentNullException("left");
@@ -162,6 +233,18 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Merges three property sources into a single one using a selector that takes values from all three sources and returns another value.
+        /// </summary>
+        /// <typeparam name="TLeft">The type of the left property source.</typeparam>
+        /// <typeparam name="TMiddle">The type fo the middle property source.</typeparam>
+        /// <typeparam name="TRight">The type fo the right property source.</typeparam>
+        /// <typeparam name="TResult">The type of the selector's result and the created property source.</typeparam>
+        /// <param name="left">The left property source.</param>
+        /// <param name="middle">The middle property source.</param>
+        /// <param name="right">The right property source.</param>
+        /// <param name="selector">A function that is called every time the left, middle or right property sources change and returns another value.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<TResult> Merge<TLeft, TMiddle, TRight, TResult>(this IPropertySource<TLeft> left, IPropertySource<TMiddle> middle, IPropertySource<TRight> right, Func<TLeft, TMiddle, TRight, TResult> selector)
         {
             if (left == null) throw new ArgumentNullException("left");
@@ -176,6 +259,12 @@ namespace ReactiveProperties
             );
         }
 
+        /// <summary>
+        /// Creates a property source whose value is the result of applying the "and" logical operator to the left and right property sources.
+        /// </summary>
+        /// <param name="left">The left property source.</param>
+        /// <param name="right">The right property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<bool> And(this IPropertySource<bool> left, IPropertySource<bool> right)
         {
             if (left == null) throw new ArgumentNullException("left");
@@ -184,6 +273,12 @@ namespace ReactiveProperties
             return left.Merge(right, (l, r) => l && r).Distinct();
         }
 
+        /// <summary>
+        /// Creates a property source whose value is the result of applying the "or" logical operator to the left and right property sources.
+        /// </summary>
+        /// <param name="left">The left property source.</param>
+        /// <param name="right">The right property source.</param>
+        /// <returns>The created property source.</returns>
         public static IPropertySource<bool> Or(this IPropertySource<bool> left, IPropertySource<bool> right)
         {
             if (left == null) throw new ArgumentNullException("left");
