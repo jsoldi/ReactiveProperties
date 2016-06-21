@@ -6,7 +6,6 @@ Observable properties for easy binding. [Here is a tiny sample WinForms applicat
 
 # Quick start
 
-
 ReactiveProperties consists of two interfaces: `IPropertySource<T>` and `IProperty<T>`. 
 
 `IPropertySource<T>` represents a readonly property that can be subscribed to, just like you'd subscribe to `IObservable<T>` if using [Reactive Extensions][1]:
@@ -37,7 +36,6 @@ This property can be then observed or it's value retrieved:
 
 Every subscription method returns an `IDisposable` that must be disposed as soon as we're done observing it. An easy way to deal with all the disposables is to use the [DisposableSet][5] utility class and add all the disposables in a single call to the [AddRange][6] method (see [sample application][7]).
 
-----------
 
 # Extension Methods
 
