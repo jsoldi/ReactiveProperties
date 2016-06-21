@@ -1,14 +1,14 @@
 
 # ReactiveProperties
 
-Observable properties for easy binding. [Here is a tiny sample WinForms application to get and idea of what it  does](https://github.com/jsoldi/ReactivePropertiesSample).
+Observable properties for easy binding. It includes a tiny sample WinForms application to give you a quick idea of what it does.
 
 
 # Quick start
 
 ReactiveProperties consists of two interfaces: `IPropertySource<T>` and `IProperty<T>`. 
 
-`IPropertySource<T>` represents a readonly property that can be subscribed to, just like you'd subscribe to `IObservable<T>` if using [Reactive Extensions][1]:
+`IPropertySource<T>` represents a readonly property that can be subscribed to, just like you'd subscribe to `IObservable<T>` if you were using [Reactive Extensions][1]:
 
     public interface IPropertySource<out T>
     {
@@ -34,12 +34,12 @@ This property can be then observed or it's value retrieved:
     string value = textBoxTextProperty.Value;
     IDisposable subscription = textBoxTextProperty.Subscribe(val => { /* Do something with the value */ });
 
-Every subscription method returns an `IDisposable` that must be disposed as soon as we're done observing it. An easy way to deal with all the disposables is to use the [DisposableSet][5] utility class and add all the disposables in a single call to the [AddRange][6] method (see [sample application][7]).
+Every subscription method returns an `IDisposable` that must be disposed as soon as we're done observing it. An easy way to deal with all the disposables is to use the [DisposableSet][5] utility class and add all the disposables in a single call to the [AddRange][6] method (see the [sample application][7]).
 
 
 # Extension Methods
 
-Since `IPropertySource<T>` is a monad, some Linq operators can be implemented (although I've implemented just a few of them), all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`, we can create an `IPropertySource<T>` that represents the name of the selected person using the [As][8], [SelectMany][9] and [Return][10] methods:
+Since `IPropertySource<T>` is a monad, some Linq operators can be implemented (although I've implemented just a few of them), all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`. If so, we could create an `IPropertySource<T>` that represents the name of the selected person using the [As][8], [SelectMany][9] and [Return][10] methods:
 
     IPropertySource<string> currentName = Property
     	.FromProperty(() => comboBox1.SelectedValue)
@@ -113,7 +113,7 @@ In this example, changing any of the X or Y properties will cause (if the actual
   [4]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L102
   [5]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs
   [6]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs#L35
-  [7]: https://github.com/jsoldi/ReactivePropertiesSample/blob/08b2076c432314983cee3d1415bb660279330f26/ReactivePropertiesSample/Form1.cs#L41
+  [7]: https://github.com/jsoldi/ReactiveProperties/blob/7c121a1329a499d58a9bc460a071c9b6b0d87fbc/WinFormsSample/Form1.cs#L45
   [8]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L146
   [9]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L95
   [10]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L12
