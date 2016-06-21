@@ -1,7 +1,7 @@
 
 # ReactiveProperties
 
-Observable properties for easy binding. It includes a tiny sample WinForms application to give you a quick idea of what it does.
+Observable properties for easy data binding. It includes a tiny sample WinForms application to give you a quick idea of what it does.
 
 
 # Quick start
@@ -39,7 +39,7 @@ Every subscription method returns an `IDisposable` that must be disposed as soon
 
 # Extension Methods
 
-Since `IPropertySource<T>` is a monad, some Linq operators can be implemented (although I've implemented just a few of them), all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`. If so, we could create an `IPropertySource<T>` that represents the name of the selected person using the [As][8], [SelectMany][9] and [Return][10] methods:
+Since `IPropertySource<T>` is a [monad][8], some Linq operators can be implemented (although I've implemented just a few of them), all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`. If so, we could create an `IPropertySource<T>` that represents the name of the selected person using the [As][9], [SelectMany][10] and [Return][11] methods:
 
     IPropertySource<string> currentName = Property
     	.FromProperty(() => comboBox1.SelectedValue)
@@ -59,7 +59,7 @@ In this example, `currentName` will contain the name of the currently selected p
 		}
 	}
 
-Properties can also be merged using the [Merge][11] method to make composite properties:
+Properties can also be merged using the [Merge][12] method to make composite properties:
 
     public class Vector
     {
@@ -92,7 +92,7 @@ Properties can also be merged using the [Merge][11] method to make composite pro
         }
 	}
 
-In this example, changing any of the X or Y properties will cause (if the actual value of the magnitude changes) `MagnitudeProperty` to notify a subscriber, if any. Alternatively, the `Magnitude` property can also have a setter if `MagnitudeProperty` is an `IProperty<double>` defined using Property's [Create][12] method:
+In this example, changing any of the X or Y properties will cause (if the actual value of the magnitude changes) `MagnitudeProperty` to notify a subscriber, if any. Alternatively, the `Magnitude` property can also have a setter if `MagnitudeProperty` is an `IProperty<double>` defined using Property's [Create][13] method:
 
     MagnitudeProperty = Property.Create(
         XProperty.Merge(YProperty, (x, y) => Math.Sqrt(x * x + y * y)), 
@@ -104,7 +104,7 @@ In this example, changing any of the X or Y properties will cause (if the actual
         }
     );
 
-`IProperty<T>` also has a [SelectMany][13] and a variation of the [Select][14] method (which also take a backwards selector), but since it cannot have a Return method (it wouldn't make any sense), it is not a monad and therefore not as extensible as `IPropertySource<T>`. 
+`IProperty<T>` also has a [SelectMany][14] and a variation of the [Select][15] method (which also take a backwards selector), but since it cannot have a Return method (it wouldn't make any sense), it is not a monad and therefore not as extensible as `IPropertySource<T>`. 
 
 
   [1]: https://msdn.microsoft.com/en-us/data/gg577609
@@ -114,10 +114,11 @@ In this example, changing any of the X or Y properties will cause (if the actual
   [5]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs
   [6]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs#L35
   [7]: https://github.com/jsoldi/ReactiveProperties/blob/7c121a1329a499d58a9bc460a071c9b6b0d87fbc/WinFormsSample/Form1.cs#L45
-  [8]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L146
-  [9]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L95
-  [10]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L12
-  [11]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L154
-  [12]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L10
-  [13]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/PropertyExtensions.cs#L12
-  [14]: https://github.com/jsoldi/ReactiveProperties/blob/574eb022526bdaad520fcbcca947be9bc469423d/Assignable/PropertyExtensions.cs#L20
+  [8]: http://stackoverflow.com/questions/2704652/monad-in-plain-english-for-the-oop-programmer-with-no-fp-background/2704795#2704795
+  [9]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L146
+  [10]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L95
+  [11]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L12
+  [12]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L154
+  [13]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L10
+  [14]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/PropertyExtensions.cs#L12
+  [15]: https://github.com/jsoldi/ReactiveProperties/blob/574eb022526bdaad520fcbcca947be9bc469423d/Assignable/PropertyExtensions.cs#L20
