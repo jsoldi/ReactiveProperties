@@ -8,7 +8,7 @@ Observable properties for easy binding. It includes a tiny sample WinForms appli
 
 ReactiveProperties consists of two interfaces: `IPropertySource<T>` and `IProperty<T>`. 
 
-`IPropertySource<T>` represents a readonly property that can be subscribed to, just like you'd subscribe to `IObservable<T>` if using [Reactive Extensions][1]:
+`IPropertySource<T>` represents a readonly property that can be subscribed to, just like you'd subscribe to `IObservable<T>` if you were using [Reactive Extensions][1]:
 
     public interface IPropertySource<out T>
     {
