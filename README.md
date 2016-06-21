@@ -39,7 +39,7 @@ Every subscription method returns an `IDisposable` that must be disposed as soon
 
 # Extension Methods
 
-Since `IPropertySource<T>` is a monad, many Linq operators can be used with, all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`, we can create an `IPropertySource<T>` that represents the name of the selected person using the [As][8], [SelectMany][9] and [Return][10] methods:
+Since `IPropertySource<T>` is a monad, some Linq operators can be implemented (although I've implemented just a few of them), all of which return another `IPropertySource<T>`. For instance, say we have a `ComboBox` that contains a list of items of class `Person`, which in turn have a property called `NameProperty`, we can create an `IPropertySource<T>` that represents the name of the selected person using the [As][8], [SelectMany][9] and [Return][10] methods:
 
     IPropertySource<string> currentName = Property
     	.FromProperty(() => comboBox1.SelectedValue)
