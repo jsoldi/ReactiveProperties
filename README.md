@@ -1,7 +1,7 @@
 
 # ReactiveProperties
 
-Observable properties for easy binding. It includes a tiny sample WinForms application to give you a quick idea of what it does.
+Observable properties for easy data binding. It includes a tiny sample WinForms application to give you a quick idea of what it does.
 
 
 # Quick start
