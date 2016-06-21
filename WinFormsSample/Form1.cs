@@ -14,7 +14,6 @@ namespace WinFormsSample
 {
     public partial class Form1 : Form
     {
-        private readonly Book DummyBook = new Book();
         private readonly BindingList<Book> Books = new BindingList<Book>();
         private readonly DisposableSet DisposableSet = new DisposableSet();
         private readonly IProperty<Book> CurrentBook;
@@ -23,9 +22,12 @@ namespace WinFormsSample
         {
             InitializeComponent();
 
-            // Create an IProperty<Book> that represents the book currently selected in the booksComboBox, or DummyBook of none is selected.
+            // A dummy book to be used when the book list is empty.
+            var dummyBook = new Book();
+
+            // Create an IProperty<Book> that represents the book currently selected in the booksComboBox, or dummyBook of none is selected.
             CurrentBook = Property.Create(
-                PropertySource.FromProperty(() => booksComboBox.SelectedValue).Select(book => book as Book ?? DummyBook),
+                PropertySource.FromProperty(() => booksComboBox.SelectedValue).Select(book => book as Book ?? dummyBook),
                 book => booksComboBox.SelectedItem = book
             );
 
@@ -45,17 +47,17 @@ namespace WinFormsSample
             DisposableSet.AddRange(
 
                 // Adding this just because it also needs to be disposed
-                booksBindingSource,
+                booksBindingSource, 
 
-                // Disable input controls if the current book is DummyBook (which means book is selected because the list is empty)
-                CurrentBook.Select(book => object.ReferenceEquals(book, DummyBook)).Subscribe(isDummy =>
+                // Disable input controls if the current book is dummyBook (which means np book is currently selected because the book list is empty)
+                CurrentBook.Select(book => object.ReferenceEquals(book, dummyBook)).Subscribe(isDummy =>
                     nameTextBox.Enabled = authorNameTextBox.Enabled = authorLastNameTextBox.Enabled = ratingTrackBar.Enabled = removeButton.Enabled = !isDummy
                 ),
 
                 // Bind two way all of the input controls with their respective properties. 
                 // When the input controls change, they'll update the current book's corresponding properties.
                 // When the current book changes, the current values will change and update the input controls.
-                // If the current book is the DummyBook they'll be disabled so DummyBook will never be edited.
+                // If the current book is dummyBook they'll be disabled so dummyBook will never be edited.
                 Property.FromProperty(() => nameTextBox.Text).TwoWayBind(currentName),
                 Property.FromProperty(() => authorNameTextBox.Text).TwoWayBind(currentAuthorName),
                 Property.FromProperty(() => authorLastNameTextBox.Text).TwoWayBind(currentAuthorLastName),
