@@ -22,6 +22,7 @@ namespace ReactiveProperties
 
         /// <summary>
         /// Given a property source, creates a property source that notifies only when the original property source's value changes according to the provided equality comparer.
+        /// Observers given to this property's <c>RawSubscribe</c> method are notified during subscription.
         /// </summary>
         /// <typeparam name="T">The type of the property source.</typeparam>
         /// <param name="source">The original property source.</param>
@@ -51,17 +52,11 @@ namespace ReactiveProperties
                             sendAndCache(value);
                     };
 
-                    Action observer = null;
+                    sendAndCache(source.Value);
 
-                    observer = () =>
+                    return source.Lazy().RawSubscribe(() =>
                     {
-                        observer = sendIfChanged;
-                        sendAndCache(source.Value);
-                    };
-
-                    return source.RawSubscribe(() =>
-                    {
-                        observer();
+                        sendIfChanged();
                     });
                 },
                 () => source.Value
@@ -82,7 +77,7 @@ namespace ReactiveProperties
         }
 
         /// <summary>
-        /// Given a property source, creates a property source that notifies at subscription time, regardless what the original source does.
+        /// Given a property source, creates a property source that notifies when <c>RawSubscribe</c> is called.
         /// </summary>
         /// <typeparam name="T">The type of the property source.</typeparam>
         /// <param name="source">The original property source.</param>
@@ -95,14 +90,15 @@ namespace ReactiveProperties
                 action =>
                 {
                     action();
-                    return source.RawSubscribe(action);
+                    return source.Lazy().RawSubscribe(action);
                 },
                 () => source.Value
             );
         }
 
         /// <summary>
-        /// Given a property source, creates a property source that does not notify at subscription time, regardless what the original source does.
+        /// Given a property source, creates a property source that does not notify when <c>RawSubscribe</c> is called.
+        /// This property source will still notify when the <see cref="PropertySource.Subscribe"/> extension method is called.
         /// </summary>
         /// <typeparam name="T">The type of the property source.</typeparam>
         /// <param name="source">The original property source.</param>

@@ -42,7 +42,7 @@ namespace ReactiveProperties
             if (observer == null) throw new ArgumentNullException("observer");
             if (comparer == null) throw new ArgumentNullException("comparer");
 
-            return source.Eager().Distinct(comparer).RawSubscribe(() => observer(source.Value));
+            return source.Distinct(comparer).RawSubscribe(() => observer(source.Value));
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace ReactiveProperties
             if (source == null) throw new ArgumentNullException("source");
             if (observer == null) throw new ArgumentNullException("observer");
 
-            return source.Eager().Distinct().RawSubscribe(() => observer(source.Value));
+            return source.Distinct().RawSubscribe(() => observer(source.Value));
         }
 
         /// <summary>

@@ -10,7 +10,7 @@ namespace ReactiveProperties
     public static partial class Property
     {
         /// <summary>
-        /// Given a property and a selector that returns a property, calls the selector passing the original property value, 
+        /// Given a property and a selector that returns a property, calls the selector passing the original property value
         /// at subscription time and every time the original property changes, and creates a property whose value gets and sets 
         /// the value of the property source returned by the selector. 
         /// </summary>
