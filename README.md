@@ -108,17 +108,17 @@ In this example, changing any of the X or Y properties will cause (if the actual
 
 
   [1]: https://msdn.microsoft.com/en-us/data/gg577609
-  [2]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceExtensions.cs#L33
+  [2]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Core/PropertySourceExtensions.cs#L55
   [3]: https://msdn.microsoft.com/en-us/library/system.componentmodel.inotifypropertychanged(v=vs.110).aspx
-  [4]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L102
-  [5]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs
-  [6]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Utils/DisposableSet.cs#L35
-  [7]: https://github.com/jsoldi/ReactiveProperties/blob/7c121a1329a499d58a9bc460a071c9b6b0d87fbc/WinFormsSample/Form1.cs#L45
+  [4]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/WinForms/Property.cs#L44
+  [5]: https://github.com/jsoldi/ReactiveProperties/blob/master/Utils/DisposableSet.cs
+  [6]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Utils/DisposableSet.cs#L50
+  [7]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/WinFormsSample/Form1.cs#L47
   [8]: http://stackoverflow.com/questions/2704652/monad-in-plain-english-for-the-oop-programmer-with-no-fp-background/2704795#2704795
-  [9]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L146
-  [10]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L95
-  [11]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L12
-  [12]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Core/PropertySourceLinq.cs#L154
-  [13]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/Property.cs#L10
-  [14]: https://github.com/jsoldi/ReactiveProperties/blob/355dcfd27824d9f90a2e40539efc6f0343132dd0/Assignable/PropertyExtensions.cs#L12
-  [15]: https://github.com/jsoldi/ReactiveProperties/blob/574eb022526bdaad520fcbcca947be9bc469423d/Assignable/PropertyExtensions.cs#L20
+  [9]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Core/PropertySourceLinq.cs#L207
+  [10]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Core/PropertySourceLinq.cs#L136
+  [11]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Core/PropertySourceLinq.cs#L18
+  [12]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Core/PropertySourceLinq.cs#L225
+  [13]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Assignable/Property.cs#L17
+  [14]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Assignable/PropertyExtensions.cs#L22
+  [15]: https://github.com/jsoldi/ReactiveProperties/blob/8075dbe0d18e375c98fef80d8acc6df64aa39598/Assignable/PropertyExtensions.cs#L39
