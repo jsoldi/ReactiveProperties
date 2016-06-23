@@ -120,6 +120,45 @@ namespace ReactiveProperties
         }
 
         /// <summary>
+        /// Given a source and a selector that returns a property source, creates a <c>RawSubscribe</c> function that attaches the 
+        /// observer to the result of the selector at subscription time and every time the source changes.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TCollection">The type of the property source returned by the selector.</typeparam>
+        /// <param name="source">The original source.</param>
+        /// <param name="selector">The property source selector.</param>
+        /// <returns>A function that attaches the observer and returns a disposable.</returns>
+        private static Func<Action, IDisposable> MakeSelectManyRawSubscribe<TSource, TCollection>(IPropertySource<TSource> source, Func<TSource, IPropertySource<TCollection>> selector)
+        {
+            return observer =>
+            {
+                IDisposable rightSubscription = Disposable.Empty;
+
+                Func<IPropertySource<TCollection>> reattachRight = () =>
+                {
+                    rightSubscription.Dispose();
+                    var rightSource = selector(source.Value);
+                    rightSubscription = rightSource.Lazy().RawSubscribe(observer);
+                    return rightSource;
+                };
+
+                IDisposable leftSubscription = source.Lazy().RawSubscribe(() =>
+                {
+                    reattachRight();
+                    observer();
+                });
+
+                reattachRight();
+
+                return Disposable.Create(() =>
+                {
+                    leftSubscription.Dispose();
+                    rightSubscription.Dispose();
+                });
+            };
+        }
+
+        /// <summary>
         /// Given a property source and a selector that returns a property source, calls the selector passing the source's value, 
         /// at subscription time and every time the original source changes, and creates a property source whose value is the value 
         /// of the property source returned by the selector. This is the bind operator of the property source monad.
@@ -135,32 +174,7 @@ namespace ReactiveProperties
             if (selector == null) throw new ArgumentNullException("selector");
 
             return PropertySource.Create(
-                observer =>
-                {
-                    IDisposable rightSubscription = Disposable.Empty;
-
-                    Func<TSource, IPropertySource<TResult>> reattachRight = leftValue =>
-                    {
-                        rightSubscription.Dispose();
-                        var rightSource = selector(leftValue);
-                        rightSubscription = rightSource.Lazy().RawSubscribe(observer);
-                        return rightSource;
-                    };
-
-                    IDisposable leftSubscription = source.Lazy().RawSubscribe(() =>
-                    {
-                        reattachRight(source.Value);
-                        observer();
-                    });
-
-                    reattachRight(source.Value);
-
-                    return Disposable.Create(() =>
-                    {
-                        leftSubscription.Dispose();
-                        rightSubscription.Dispose();
-                    });
-                },
+                MakeSelectManyRawSubscribe(source, selector),
                 () => selector(source.Value).Value
             );
         }
@@ -182,8 +196,17 @@ namespace ReactiveProperties
             Func<TSource, IPropertySource<TCollection>> propertySourceSelector, 
             Func<TSource, TCollection, TResult> resultSelector)
         {
-            return source.SelectMany(tSource =>
-                propertySourceSelector(tSource).Select(tCollection => resultSelector(tSource, tCollection))
+            if (source == null) throw new ArgumentNullException("source");
+            if (propertySourceSelector == null) throw new ArgumentNullException("propertySourceSelector");
+            if (resultSelector == null) throw new ArgumentNullException("resultSelector");
+
+            return PropertySource.Create(
+                MakeSelectManyRawSubscribe(source, propertySourceSelector),
+                () =>
+                {
+                    var sourceValue = source.Value;
+                    return resultSelector(sourceValue, propertySourceSelector(sourceValue).Value);
+                }
             );
         }
 
