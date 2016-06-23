@@ -96,11 +96,11 @@ In this example, changing any of the X or Y properties will cause (if the actual
 
     MagnitudeProperty = Property.Create(
         XProperty.Merge(YProperty, (x, y) => Math.Sqrt(x * x + y * y)), 
-        mag =>
+        newMagnitude =>
         {
-            var magnitude = Magnitude;
-            X *= mag / magnitude;
-            Y *= mag / magnitude;
+			var scale = newMagnitude / Magnitude;
+			X *= scale;
+			Y *= scale;
         }
     );
 
