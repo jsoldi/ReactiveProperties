@@ -205,6 +205,26 @@ namespace Tests.Core
         }
 
         [TestMethod]
+        public void SelectMany2Works()
+        {
+            var nested = new TestPropertySource<Tuple<int, TestPropertySource<string>>>(null);
+            nested.Value = Tuple.Create(1, new TestPropertySource<string>("one"));
+            var source = PropertySource.SelectMany(nested, a => a.Item2, (tuple, text) => tuple.Item1.ToString() + ":" + text);
+            string value = null;
+            Action<string> observer = str => value = str;
+
+            Assert.AreEqual("1:one", source.Value);
+
+            using (var subs = source.Subscribe(observer))
+            {
+                nested.SetAndNotify(Tuple.Create(2, new TestPropertySource<string>("two")));
+                Assert.AreEqual("2:two", value);
+                nested.Value.Item2.SetAndNotify("TWO");
+                Assert.AreEqual("2:TWO", value);
+            }
+        }
+
+        [TestMethod]
         public void SelectWorks()
         {
             var left = new TestPropertySource<int>(10);

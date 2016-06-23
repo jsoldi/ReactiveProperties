@@ -166,6 +166,28 @@ namespace ReactiveProperties
         }
 
         /// <summary>
+        /// Given a property source, a property source selector and a result selector, calls the property source selector passing the source's value, and
+        /// the result selector passing the source's value and the value of the property source selector's result, at subscription time and every time the 
+        /// original source changes, and creates a property whose value is the value returned by the result selector.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the original property soruce.</typeparam>
+        /// <typeparam name="TCollection">The type of the property source returned by <see cref="propertySourceSelector"/>.</typeparam>
+        /// <typeparam name="TResult">The type of the created property source.</typeparam>
+        /// <param name="source">The original property source.</param>
+        /// <param name="propertySourceSelector">A function that receives the value of the original source at subscription time and every time it changes, and returns a property source.</param>
+        /// <param name="resultSelector">A selector that will receive each value from the original property source and the property source returned by <see cref="propertySourceSelector"/> and returns a new value.</param>
+        /// <returns>The created property source.</returns>
+        public static IPropertySource<TResult> SelectMany<TSource, TCollection, TResult>(
+            this IPropertySource<TSource> source, 
+            Func<TSource, IPropertySource<TCollection>> propertySourceSelector, 
+            Func<TSource, TCollection, TResult> resultSelector)
+        {
+            return source.SelectMany(tSource =>
+                propertySourceSelector(tSource).Select(tCollection => resultSelector(tSource, tCollection))
+            );
+        }
+
+        /// <summary>
         /// Creates a new property source given an original property source and a selector that maps each value taken by the original source property into a new value.
         /// </summary>
         /// <typeparam name="TSource">The type of the original source.</typeparam>
